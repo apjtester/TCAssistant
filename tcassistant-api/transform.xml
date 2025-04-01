@@ -1,0 +1,31 @@
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+    <xsl:output method="html"/>
+    
+    <!-- Match the root node -->
+    <xsl:template match="/">
+        <html>
+            <body>
+                <xsl:apply-templates/>
+            </body>
+        </html>
+    </xsl:template>
+    
+    <!-- Convert <strong> to <h2> -->
+    <xsl:template match="strong">
+        <h2>
+            <xsl:apply-templates/>
+        </h2>
+    </xsl:template>
+    
+    <!-- Keep all other elements unchanged -->
+    <xsl:template match="*">
+        <xsl:copy>
+            <xsl:apply-templates select="@*|node()"/>
+        </xsl:copy>
+    </xsl:template>
+    
+    <!-- Copy attributes unchanged -->
+    <xsl:template match="@*">
+        <xsl:copy/>
+    </xsl:template>
+</xsl:stylesheet>

@@ -1,0 +1,26 @@
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    margin: 0;
+  }
+  header {
+    background-color: #0099db;
+    color: white;
+    padding: 0.5rem;
+    text-align: center;
+  }
+  .container {
+    display: flex;
+    flex: 1;
+  }
+  .left-panel {
+    width: 20%;
+    background-color: #f4f4f4;
+    padding: 1rem;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+  }
+  .main-content {
+    flex: 1;
+    padding: 1rem;
+  }

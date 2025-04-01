@@ -1,0 +1,5 @@
+setup.py
+TCAssistat.egg-info/PKG-INFO
+TCAssistat.egg-info/SOURCES.txt
+TCAssistat.egg-info/dependency_links.txt
+TCAssistat.egg-info/top_level.txt
