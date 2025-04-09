@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Subscription } from 'rxjs/internal/Subscription';
+import { MarkdownService } from 'ngx-markdown';
 import { ScenarioService } from 'src/app/core/scenario.service';
 
 @Component({
@@ -10,14 +11,17 @@ import { ScenarioService } from 'src/app/core/scenario.service';
 export class ScenarioOutputComponent {
 // scenarios: Scenario[] = [];
   private subscription!: Subscription;
-isLoading: boolean = false;
-text: string = "";
-constructor(private scenarioService: ScenarioService) {}
+  isLoading: boolean = false;
+  htmlText: string = "";
+constructor(private scenarioService: ScenarioService,private markdownService: MarkdownService) {}
 ngOnInit(): void {
   // Subscribe to the text observable.
-  this.subscription = this.scenarioService.text$.subscribe(updatedText => {
-    this.text = updatedText;
-    console.log(this.text)
+  this.subscription = this.scenarioService.text$.subscribe(updatedText => {  
+    let parsedText=this.markdownService.parse(updatedText);
+    if(typeof parsedText=="string")
+      this.htmlText = parsedText
+    else
+      parsedText.then(value=>this.htmlText=value);
   }
    );
 }

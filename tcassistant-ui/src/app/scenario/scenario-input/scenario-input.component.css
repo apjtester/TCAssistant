@@ -3,11 +3,12 @@
     flex-direction: row;
     width: 100%;
     height: 70%;
-    align-items: center;
+    margin: 10px 10px;
+    align-items: flex-end;
 }
 .context-container{
-    display: flex;
-    flex-direction: column;
+    /* display: flex; */
+    /* flex-direction: column; */
     width: 100%;
     height: 20%;
     align-items: center;
@@ -16,7 +17,7 @@
     width: 80%;
     height: 80%;
     resize: none;
-    margin: 10px;
+    margin-right: 10px;
     border-radius: 10px;
 }
 .context-input {
@@ -26,6 +27,18 @@
     resize: none;
     border-radius: 10px;
 }
+.dropdown-item{
+    display: inline-block;
+    width: 50%;
+}
+.dropdown-small{
+    width: 50%;
+    padding: 5px;
+}
+.dropdown-large{
+    width: 80%;
+    padding: 5px;
+}
 button {
     width: 20%;
     padding: 10px;
@@ -33,4 +46,8 @@ button {
     border: none;
     border-radius: 10px;
     color: white;
+}
+button:disabled {
+    background: linear-gradient(to right, #cccccc, #999999);
+    cursor: not-allowed;
 }

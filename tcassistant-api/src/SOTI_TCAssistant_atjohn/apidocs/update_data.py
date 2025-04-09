@@ -38,6 +38,6 @@ class Revise(Resource):
         """
         This endpoint updates the Knowledge base with the latest MC Help page.
         """
-        url = request.args.get('url',default='https://www.soti.net/mc/help/v2025.0/en/start.html')
+        url = request.args.get('url',default='https://www.soti.net/mc/help/v2025.1/en/start.html')
         singleton.rag.vstoreConnection.fetch_all_links(url)
         return {'message': "Updated VectorStore"}, 200

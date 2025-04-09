@@ -1,7 +1,22 @@
-<div class="context-container">
-    <textarea class="context-input" [(ngModel)]="context"></textarea>
-</div>
+<!-- <div class="row context-container">
+    <div class="dropdown-item">
+        <label for="dropdown1" style="margin-right: 8px;">Family</label>
+        <select id="dropdown1" class="dropdown-small">
+            <option value="option1">Common</option>
+            <option value="option2">Windows</option>
+            <option value="option3">Apple</option>
+        </select>
+    </div>
+    <div class="dropdown-item">
+        <label for="dropdown2" style="margin-right: 8px;">Area</label>
+        <select id="dropdown2" class="dropdown-large">
+            <option value="optionA">Policies</option>
+            <option value="optionB">Profiles</option>
+            <option value="optionC">Device Details</option>
+        </select>
+    </div>
+</div> -->
 <div class="query-container">
     <textarea class="query-input" [(ngModel)]="inputText"></textarea>
-    <button (click)="onSubmit()">GENERATE</button>
+    <button (click)="onSubmit()" [disabled]="isGenerating">GENERATE</button>
 </div>

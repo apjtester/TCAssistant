@@ -1,14 +1,12 @@
 body {
     display: flex;
     flex-direction: column;
-    height: 100vh;
     margin: 0;
   }
   header {
     background-color: #0099db;
     color: white;
-    padding: 0.5rem;
-    text-align: center;
+    text-align: start;
   }
   .container {
     display: flex;
@@ -24,3 +22,13 @@ body {
     flex: 1;
     padding: 1rem;
   }
+  .logo{
+    font-weight: bold;
+    margin-left: 1rem;
+    color: white;
+    display: inline-block;
+  }
+  /* h2{
+    display: inline-block;
+    align-self: center;
+  } */

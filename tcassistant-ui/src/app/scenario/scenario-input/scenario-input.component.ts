@@ -10,15 +10,19 @@ export class ScenarioInputComponent {
   ac: string = '';
   context: string = '';
   inputText: string="";
+  isGenerating: boolean = false;
 
   constructor(private scenarioService: ScenarioService) {}
 
-  onSubmit(): void {
+  async onSubmit(): Promise<void> {
     if (this.validateInput()) {
       this.updateModel();
-      this.scenarioService.requestScenarioGeneration('initial',this.inputText, this.context);
-      console.log("Scenario generation requested.");
-      this.resetForm();
+      this.isGenerating = true;
+      let input=this.inputText;
+      let context=this.context;
+      await this.scenarioService.requestScenarioGeneration('initial',input, context);
+      
+      this.isGenerating = false;
     } else {
       //Inform the user that the input is invalid.
   }
@@ -33,6 +37,7 @@ export class ScenarioInputComponent {
     // TODO: Clear form fields and reset the model.
     this.ac = '';
     this.context = '';
+    this.inputText = '';
   }
 
   updateModel(): void {

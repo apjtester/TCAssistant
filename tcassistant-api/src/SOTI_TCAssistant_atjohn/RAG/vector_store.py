@@ -17,7 +17,7 @@ import re
 
 from .sql_connection import SQLConnection
 
-rootPathList="https://www.soti.net/mc/help/v2025.0/en".split("/")
+rootPathList="https://www.soti.net/mc/help/v2025.1/en".split("/")
 
 class VectorStoreConnection:
     persist_directory="faiss_index"
@@ -56,7 +56,7 @@ class VectorStoreConnection:
         summary=OllamaLLM(model="gemma:2b").invoke("Summarize the following text in 2 or 3 lines and print only the sumarized text. Summarized text should mention all topics covered. \""+text+"\"")  
         summary= re.sub(r'^(Sure,([a-zA-Z]|[0-9]| |\')+:( |\n)*)+','', summary)
         print("URL: ",url,", Adding:",summary)
-        self.vectorstore.add_texts(texts=[summary],metadatas=[{"source": f"URL_{url}", "doc_id": doc_id}])
+        self.vectorstore.add_texts(texts=[summary],metadatas=[{"source": url, "doc_id": doc_id}])
     
     def load_vstore(self):
         embeddings = OllamaEmbeddings(model="nomic-embed-text") 
@@ -79,12 +79,12 @@ class VectorStoreConnection:
         #     print(f"Nearest neighbor {i+1}: {self.docChunks[index]}, Distance {distance}")
         # return [self.docChunks[i] for i in indices[0]]
         similardocs=self.vectorstore.similarity_search_with_score(question,k=k)
-        for doc in similardocs:
-            print(doc[1]) 
+        sourceUrls=[]
         docs=[]
         for doc in similardocs:
+            sourceUrls.append(doc[0].metadata["source"])
             docs.append(Document(page_content=self.sqlConnection.getText(doc[0].metadata["doc_id"]),metadata=doc[0].metadata))
-        return docs
+        return docs, sourceUrls
 
     def fetch_all_links(self, url, visited=None,initial=True,path=rootPathList):
         if visited is None:

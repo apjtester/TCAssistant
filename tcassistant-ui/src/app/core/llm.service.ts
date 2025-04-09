@@ -6,17 +6,17 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class LlmService {
-  readonly api_root = 'http://localhost:11434/';
-  readonly model_name='gemma:7b'
+  readonly api_root = 'http://localhost:1000/';
+  readonly model_name='gemma3:4b'
 
   constructor(private http: HttpClient) {
    }
 
   generateScenarios(ac: string, context?: string): Observable<any> {
-    const body = { model:this.model_name,messages:[{role:"system",content:"You are a MobiControl Expert. Answer based on the context.\n\nContext: "+context},{role:"user",content:ac}] };
+    const body = { model:this.model_name,question:ac}//,messages:[{role:"system",content:"You are a MobiControl Expert. Answer based on the context.\n\nContext: "+context},{role:"user",content:ac}] };
 
     console.log("lets generate");
-    return this.getStreamPost(this.api_root+'api/chat', body);
+    return this.getStreamPost(this.api_root+'chat', body);
     // var responses= this.http.post<any[]>(this.api_root+'api/chat', body, { observe: 'body', responseType: 'json' }).pipe(
     //   tap(rawResponse => {
     //     console.log('Raw API response:', rawResponse);
@@ -63,7 +63,6 @@ export class LlmService {
           if (!response.body) {
             throw new Error('ReadableStream not supported in this browser.');
           }
-          console.log(response.body);
           const reader = response.body.getReader();
           const decoder = new TextDecoder();
           let buffer = '';
@@ -74,8 +73,7 @@ export class LlmService {
                 // Process any remaining buffered text.
                 if (buffer.trim().length) {
                   try {
-                    const parsed = JSON.parse(buffer);
-                    observer.next(parsed);
+                    observer.next(buffer);
                   } catch (e) {
                     observer.error('Error parsing final chunk: ' + e);
                   }
@@ -83,27 +81,26 @@ export class LlmService {
                 observer.complete();
                 return;
               }
-
               // Decode the current chunk and append to buffer.
-              buffer += decoder.decode(value, { stream: true });
-
+              buffer = decoder.decode(value, { stream: true });
+              observer.next(buffer);
               // Split the buffer by newlines (assuming JSON objects are newline separated).
-              const lines = buffer.split('\n');
-              // The last line may be incomplete; keep it in the buffer.
-              buffer = lines.pop() || '';
+              // const lines = buffer.split('\n');
+              // // The last line may be incomplete; keep it in the buffer.
+              // buffer = lines.pop() || '';
 
-              // Process each complete line.
-              lines.forEach(line => {
-                if (line.trim().length) {
-                  try {
-                    const parsed = JSON.parse(line);
-                    console.log(parsed);
-                    observer.next(parsed);
-                  } catch (e) {
-                    console.error('Error parsing JSON line:', line, e);
-                  }
-                }
-              });
+              // // Process each complete line.
+              // lines.forEach(line => {
+              //   if (line.trim().length) {
+              //     try {
+              //       // const parsed = JSON.parse(line);
+              //       // console.log(parsed);
+              //       observer.next(line);
+              //     } catch (e) {
+              //       console.error('Error parsing JSON line:', line, e);
+              //     }
+              //   }
+              // });
 
               // Read the next chunk.
               readChunk();
